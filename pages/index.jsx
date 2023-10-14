@@ -1,11 +1,9 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit"
 import Head from "next/head"
-import styles from "../styles/Home.module.css"
-import { Button } from "@/components/ui/button"
+import BridgeCard from "@/components/BridgeCard"
 
 const Home = () => {
   return (
-    <div className={styles.container}>
+    <div >
       <Head>
         <title>Scroll Bridge</title>
         <meta
@@ -14,58 +12,13 @@ const Home = () => {
         />
         <link href="/favicon.ico" rel="icon" />
       </Head>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <div className="flex flex-col items-center justify-center min-h-screen">
         <Head>
-          <title>跨链桥项目</title>
-          <ConnectButton />
+          <title>Degenmate Scroll Bridge</title>
         </Head>
 
-        <div className="w-2/3 bg-white p-8 rounded-xl shadow-md">
-          <h1 className="text-2xl font-bold mb-6">Bridge</h1>
-
-          <div className="border-t border-gray-200 pt-6">
-            <h2 className="text-xl font-semibold mb-4">Bridge tokens</h2>
-            <p className="text-gray-600 mb-4">Transfer your tokens from one network to another.</p>
-            <button className="underline text-blue-500">Show more</button>
-
-            <div className="flex gap-12 mt-6">
-              <div className="flex-1">
-                <label className="block text-sm font-semibold mb-2">From this network</label>
-                <div className="relative">
-                  <select className="block w-full bg-gray-100 rounded-md border-gray-300 p-2">
-                    <option>Ethereum</option>
-                    <option>Network B</option>
-                  </select>
-                  <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                    <svg className="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fillRule="evenodd" d="M6.293 9.293a1 1 0 011.414 0L10 11.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-              <div className="flex-1">
-                <label className="block text-sm font-semibold mb-2">To this network</label>
-                <div className="relative">
-                  <select className="block w-full bg-gray-100 rounded-md border-gray-300 p-2">
-                    <option>Select a network</option>
-                    <option>Network B</option>
-                    <option>Network C</option>
-                  </select>
-                  <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                    <svg className="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fillRule="evenodd" d="M6.293 9.293a1 1 0 011.414 0L10 11.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <BridgeCard />
       </div>
-
-      <footer className={styles.footer}>
-        <div>Scroll Bridge</div>
-      </footer>
     </div>
   )
 }
