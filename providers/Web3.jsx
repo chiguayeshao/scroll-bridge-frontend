@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import "@rainbow-me/rainbowkit/styles.css"
 import { configureChains, createConfig, WagmiConfig } from "wagmi"
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit"
+import { getDefaultWallets, RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit"
 import {
   arbitrum,
   goerli,
@@ -46,7 +46,11 @@ export function Web3Provider(props) {
     <>
       {ready && (
         <WagmiConfig config={wagmiConfig}>
-          <RainbowKitProvider chains={chains}>
+          <RainbowKitProvider chains={chains} theme={lightTheme({
+            accentColor: "#f4be76",
+            accentColorForeground: "white",
+            borderRadius: "medium"
+          })}>
             {props.children}
           </RainbowKitProvider>
         </WagmiConfig>
