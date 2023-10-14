@@ -16,28 +16,61 @@ import {
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs"
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 const BridgeCard = () => {
     return (
         <div className="w-2/3 bg-white p-8 rounded-3xl shadow-md">
             <div className="flex justify-center pt-6">
-                <Tabs defaultValue="account" className=" w-full">
+                <Tabs defaultValue="deposit" className=" w-full">
                     <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="account">Account</TabsTrigger>
-                        <TabsTrigger value="password">Password</TabsTrigger>
+                        <TabsTrigger value="deposit">Deposit</TabsTrigger>
+                        <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="account">
+                    <TabsContent value="deposit">
                         <Card>
                             <CardHeader>
-                                <CardTitle>Account</CardTitle>
-                                <CardDescription>
-                                    Make changes to your account here. Click save when you're done.
-                                </CardDescription>
+                                <CardTitle>From</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2">
-                                <div className="space-y-1">
-                                    <Label htmlFor="name">Name</Label>
-                                    <Input id="name" defaultValue="Pedro Duarte" />
+                                <div>
+                                    <Select>
+                                        <SelectTrigger className="w-[180px]">
+                                            <SelectValue placeholder="Select NetWork" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectLabel>Network</SelectLabel>
+                                                <SelectItem value="Ethereum">Ethereum</SelectItem>
+                                                <SelectItem value="Polygon">Polygon</SelectItem>
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="flex flex-row items-center justify-center gap-4">
+                                    <Input id="token" placeholder='0.00' />
+                                    <div>
+                                        <Select>
+                                            <SelectTrigger className="w-[180px]">
+                                                <SelectValue placeholder="Select Token" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectLabel>Token</SelectLabel>
+                                                    <SelectItem value="ETH">ETH</SelectItem>
+                                                    <SelectItem value="USDT">USDT</SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
                                 </div>
                                 <div className="space-y-1">
                                     <Label htmlFor="username">Username</Label>
@@ -49,26 +82,26 @@ const BridgeCard = () => {
                             </CardFooter>
                         </Card>
                     </TabsContent>
-                    <TabsContent value="password">
+                    <TabsContent value="withdraw">
                         <Card>
                             <CardHeader>
                                 <CardTitle>Password</CardTitle>
                                 <CardDescription>
-                                    Change your password here. After saving, you'll be logged out.
+                                    Change your withdraw here. After saving, you'll be logged out.
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-2">
                                 <div className="space-y-1">
-                                    <Label htmlFor="current">Current password</Label>
-                                    <Input id="current" type="password" />
+                                    <Label htmlFor="current">Current withdraw</Label>
+                                    <Input id="current" type="withdraw" />
                                 </div>
                                 <div className="space-y-1">
-                                    <Label htmlFor="new">New password</Label>
-                                    <Input id="new" type="password" />
+                                    <Label htmlFor="new">New withdraw</Label>
+                                    <Input id="new" type="withdraw" />
                                 </div>
                             </CardContent>
                             <CardFooter>
-                                <Button>Save password</Button>
+                                <Button>Save withdraw</Button>
                             </CardFooter>
                         </Card>
                     </TabsContent>
