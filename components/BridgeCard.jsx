@@ -34,7 +34,7 @@ const BridgeCard = () => {
         <div className="w-2/3 bg-white p-8 rounded-3xl shadow-md">
             <div className="flex justify-center pt-6">
                 <Tabs defaultValue="deposit" className="w-full">
-                    <TabsList className="grid w-full grid-cols-2">
+                    <TabsList className="grid w-full grid-cols-2 bg-[#fcefdc]">
                         <TabsTrigger value="deposit">Deposit</TabsTrigger>
                         <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
                     </TabsList>
