@@ -9,7 +9,6 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
     Tabs,
     TabsContent,
@@ -27,9 +26,10 @@ import {
 } from "@/components/ui/select"
 import Image from "next/image"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
-
+import { useAccount } from 'wagmi'
 
 const BridgeCard = () => {
+    const { isDisconnected } = useAccount()
     return (
         <div className="w-2/3 bg-white p-8 rounded-3xl shadow-md">
             <div className="flex justify-center pt-6">
@@ -85,7 +85,7 @@ const BridgeCard = () => {
                                 </div>
                             </CardContent>
                             <CardFooter className='flex items-center justify-center'>
-                                <ConnectButton />
+                                {isDisconnected ? <ConnectButton /> : <Button className='w-1/2 bg-[#f4be76] hover:bg-[#eeae5a]'> Confirm </Button>}
                             </CardFooter>
                         </Card>
                     </TabsContent>
@@ -136,7 +136,7 @@ const BridgeCard = () => {
                                 </div>
                             </CardContent>
                             <CardFooter className='flex items-center justify-center'>
-                                <ConnectButton />
+                                {isDisconnected ? <ConnectButton /> : <Button className='w-1/2 bg-[#f4be76] hover:bg-[#eeae5a]'> Confirm </Button>}
                             </CardFooter>
                         </Card>
                     </TabsContent>
