@@ -112,6 +112,11 @@ const BridgeCard = () => {
                   </div>
                   <Button
                     className="bg-[#f4be76] hover:bg-[#eeae5a]"
+                    onClick={() => {
+                      if (data) {
+                        setInputValueDeposit(formatNumber(data?.formatted))
+                      }
+                    }}
                   >
                     max
                   </Button>
