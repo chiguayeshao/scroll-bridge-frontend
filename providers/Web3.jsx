@@ -9,7 +9,8 @@ import {
   optimism,
   polygon,
   zora,
-  zkSyncTestnet
+  zkSyncTestnet,
+  sepolia
 } from "wagmi/chains"
 import { publicProvider } from "wagmi/providers/public"
 
@@ -40,7 +41,8 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     // zora,
     // ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [goerli] : [])
     ScrollSepoliaTestnet,
-    zkSyncTestnet
+    zkSyncTestnet,
+    sepolia
   ],
   [publicProvider()]
 )

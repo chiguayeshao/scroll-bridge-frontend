@@ -24,15 +24,15 @@ import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { useAccount, useBalance, useContractRead } from "wagmi"
 import { CONTRACT_ADDRESS } from "@/config/address"
 import Abi from "@/config/CrossChainBridge.json"
+import { ethers } from "ethers"
 
 const BridgeCard = () => {
   const [inputValueDeposit, setInputValueDeposit] = useState("")
-  const [selectedNetworkDeposit, setSelectedNetworkDeposit] =
-    useState("ZkSync")
+  const [selectedNetworkDeposit, setSelectedNetworkDeposit] = useState("ZkSync")
   const [selectedTokenDeposit, setSelectedTokenDeposit] = useState("ETH")
 
   const { address, isDisconnected } = useAccount()
-  
+
   const { data, isError, isLoading } = useBalance({
     address: address,
     chainId: 280,
@@ -40,12 +40,18 @@ const BridgeCard = () => {
     cacheTime: 2_000
   })
 
-  const { data:getFeeData, isError:getFeeError, isLoading:getFeeLoading } = useContractRead({
+  const {
+    data: getFeeData,
+    isError: getFeeError,
+    isLoading: getFeeLoading
+  } = useContractRead({
     address: CONTRACT_ADDRESS,
     abi: Abi,
     functionName: "getFees",
-    // args: []
+    args: [ethers.constants.AddressZero, 1]
   })
+
+  console.log(getFeeData, "fuck getFeeData")
 
   const handleDepositConfirmClick = () => {
     console.log("Current Tab: Deposit")
@@ -158,7 +164,8 @@ const BridgeCard = () => {
                   />
                 </div>
                 <div className="flex flex-row gap-2">
-                  Estiamted return on Scroll <div className="text-[#ed7255]">{1.22}</div> ETH
+                  Estiamted return on Scroll{" "}
+                  <div className="text-[#ed7255]">{1.22}</div> ETH
                 </div>
               </CardContent>
               <CardFooter className="flex items-center justify-center">
