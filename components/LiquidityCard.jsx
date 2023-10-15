@@ -141,12 +141,17 @@ const LiquidityCard = () => {
               <CardHeader>
                 <div className="flex flex-row justify-between">
                   <CardTitle>Select Pool</CardTitle>
-                  <div className="font-bold text-xl">
-                    <div className="flex flex-row gap-2">
-                      Total <div className="text-[#ed7255]">{formatNumber(poolData?.formatted)}</div>ETH In{" "}
-                      <div>{selectPool}</div> Pool
+                  {poolData ? (
+                    <div className="font-bold text-xl">
+                      <div className="flex flex-row gap-2">
+                        Total
+                        <div className="text-[#ed7255]">
+                          {formatNumber(poolData?.formatted)}
+                        </div>
+                        ETH In <div>{selectPool}</div> Pool
+                      </div>
                     </div>
-                  </div>
+                  ) : null}
                 </div>
               </CardHeader>
               <CardContent className="space-y-2">
