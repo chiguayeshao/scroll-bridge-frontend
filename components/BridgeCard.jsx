@@ -21,21 +21,26 @@ import {
 } from "@/components/ui/select"
 import Image from "next/image"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
-import { useAccount, useBalance, useContractRead } from "wagmi"
-import { CONTRACT_ADDRESS } from "@/config/address"
+import {
+  useAccount,
+  useBalance,
+  useContractRead,
+  useContractWrite
+} from "wagmi"
+import { CONTRACT_ADDRESS, SEPOLIA_CONTRACT_ADDRESS } from "@/config/address"
 import Abi from "@/config/CrossChainBridge.json"
-import { ethers } from "ethers"
+import { ethers, utils } from "ethers"
 
 const BridgeCard = () => {
-  const [inputValueDeposit, setInputValueDeposit] = useState("")
-  const [selectedNetworkDeposit, setSelectedNetworkDeposit] = useState("ZkSync")
+  const [inputValueDeposit, setInputValueDeposit] = useState(0)
+  const [selectedNetworkDeposit, setSelectedNetworkDeposit] = useState("Sepolia")
   const [selectedTokenDeposit, setSelectedTokenDeposit] = useState("ETH")
 
   const { address, isDisconnected } = useAccount()
 
   const { data, isError, isLoading } = useBalance({
     address: address,
-    chainId: 280,
+    chainId: 534351,
     watch: true,
     cacheTime: 2_000
   })
@@ -48,16 +53,39 @@ const BridgeCard = () => {
     address: CONTRACT_ADDRESS,
     abi: Abi,
     functionName: "getFees",
-    args: [ethers.constants.AddressZero, 1]
+    args: [
+      ethers.constants.AddressZero,
+      inputValueDeposit ? utils.parseEther(inputValueDeposit.toString()) : 0
+    ],
+    chainId: 534351
   })
 
-  console.log(getFeeData, "fuck getFeeData")
+  const {
+    data: crossChainTransferInData,
+    isLoading: crossChainTransferInIsLoading,
+    isSuccess: crossChainTransferInIsSuccess,
+    write
+  } = useContractWrite({
+    address: SEPOLIA_CONTRACT_ADDRESS,
+    abi: Abi,
+    functionName: "crossChainTransferIn",
+    chainId: 11155111
+  })
 
   const handleDepositConfirmClick = () => {
     console.log("Current Tab: Deposit")
     console.log("Input Value (Deposit):", inputValueDeposit)
     console.log("Selected Network (Deposit):", selectedNetworkDeposit)
     console.log("Selected Token (Deposit):", selectedTokenDeposit)
+
+    write({
+      args: [
+        534351,
+        ethers.constants.AddressZero,
+        utils.parseEther((inputValueDeposit - utils.formatEther(getFeeData)).toString())
+      ],
+      value: utils.parseEther((inputValueDeposit - utils.formatEther(getFeeData)).toString())
+    })
   }
 
   const formatNumber = (numStr) => {
@@ -83,7 +111,7 @@ const BridgeCard = () => {
                 <div>
                   <Select
                     onValueChange={(value) => setSelectedNetworkDeposit(value)}
-                    defaultValue="ZkSync"
+                    defaultValue="Sepolia"
                   >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Select NetWork" />
@@ -91,7 +119,7 @@ const BridgeCard = () => {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Network</SelectLabel>
-                        <SelectItem value="ZkSync">ZkSync</SelectItem>
+                        <SelectItem value="Sepolia">Sepolia</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -163,10 +191,15 @@ const BridgeCard = () => {
                     height={96}
                   />
                 </div>
-                <div className="flex flex-row gap-2">
-                  Estiamted return on Scroll{" "}
-                  <div className="text-[#ed7255]">{1.22}</div> ETH
-                </div>
+                {getFeeData ? (
+                  <div className="flex flex-row gap-2">
+                    Estiamted return on Scroll
+                    <div className="text-[#ed7255]">
+                      {inputValueDeposit - utils.formatEther(getFeeData)}
+                    </div>
+                    ETH
+                  </div>
+                ) : null}
               </CardContent>
               <CardFooter className="flex items-center justify-center">
                 {isDisconnected ? (
