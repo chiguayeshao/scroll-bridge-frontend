@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/select"
 import Image from "next/image"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
-import { useAccount } from "wagmi"
+import { useAccount, useBalance } from "wagmi"
 
 const LiquidityCard = () => {
   const [inputValueDeposit, setInputValueDeposit] = useState("")
@@ -47,7 +47,25 @@ const LiquidityCard = () => {
     console.log("Selected Token (Withdraw):", selectedTokenWithdraw)
   }
 
-  const { isDisconnected } = useAccount()
+  const { address, isDisconnected } = useAccount()
+  const { data, isError, isLoading } = useBalance({
+    address: address,
+    chainId: 534351,
+    watch: true,
+    cacheTime: 2_000
+  })
+
+  if (isLoading) return <div>Fetching balance…</div>
+  if (isError) return <div>Error fetching balance</div>
+
+  function formatNumber(numStr) {
+    const parsed = parseFloat(numStr)
+    if (!isNaN(parsed)) {
+      return parsed.toFixed(3)
+    }
+    return "Invalid number"
+  }
+
   return (
     <div className="w-2/3 bg-white p-8 rounded-3xl shadow-md">
       <div className="font-bold text-3xl">Add liquidity</div>
@@ -125,9 +143,16 @@ const LiquidityCard = () => {
                 </div>
                 <div className="flex flex-row justify-between mt-4">
                   <div></div>
-                  <div className="flex flex-row font-bold gap-2">
-                    Balance: <div className="text-[#ed7255]">{2}</div>
-                  </div>
+                  {data ? (
+                    <div className="flex flex-row font-bold gap-2">
+                      Balance:{" "}
+                      <div className="text-[#ed7255]">
+                        {formatNumber(data?.formatted)}
+                      </div>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </CardContent>
               <CardFooter className="flex items-center justify-center">
