@@ -25,8 +25,7 @@ import { useAccount } from "wagmi"
 
 const LiquidityCard = () => {
   const [inputValueDeposit, setInputValueDeposit] = useState("")
-  const [selectedNetworkDeposit, setSelectedNetworkDeposit] =
-    useState("Ethereum")
+  const [selectedNetworkDeposit, setSelectedNetworkDeposit] = useState("Zksync")
   const [selectedTokenDeposit, setSelectedTokenDeposit] = useState("ETH")
 
   const [inputValueWithdraw, setInputValueWithdraw] = useState("")
@@ -63,13 +62,19 @@ const LiquidityCard = () => {
           <TabsContent value="deposit">
             <Card>
               <CardHeader>
-                <CardTitle>From</CardTitle>
+                <div className="flex flex-row justify-between">
+                  <CardTitle>Select Pool</CardTitle>
+                  <div className="flex flex-row font-bold gap-2">
+                    Total<div className="text-[#ed7255]">{2}</div>ETH IN
+                    <div>{selectedNetworkDeposit}</div>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div>
                   <Select
                     onValueChange={(value) => setSelectedNetworkDeposit(value)}
-                    defaultValue="Ethereum"
+                    defaultValue="Zksync"
                   >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Select NetWork" />
@@ -77,8 +82,8 @@ const LiquidityCard = () => {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Network</SelectLabel>
-                        <SelectItem value="Ethereum">Ethereum</SelectItem>
-                        <SelectItem value="Polygon">Polygon</SelectItem>
+                        <SelectItem value="Zksync">Zksync</SelectItem>
+                        <SelectItem value="Scroll">Scroll</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -108,26 +113,23 @@ const LiquidityCard = () => {
                         <SelectGroup>
                           <SelectLabel>Token</SelectLabel>
                           <SelectItem value="ETH">ETH</SelectItem>
-                          <SelectItem value="USDT">USDT</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
                   </div>
+                  <Button className="bg-[#f4be76] hover:bg-[#eeae5a]">
+                    max
+                  </Button>
                 </div>
               </CardContent>
               <CardHeader>
-                <CardTitle>To</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="space-y-1">
-                  <Image
-                    src="/scrollLogo.svg"
-                    alt="scrollLogo"
-                    width={128}
-                    height={96}
-                  />
+                <div className="font-bold text-xl">
+                  <div className="flex flex-row gap-2">
+                    Current <div className="text-[#ed7255]">{3}</div>ETH In{" "}
+                    <div>{selectedNetworkDeposit}</div> Pool
+                  </div>
                 </div>
-              </CardContent>
+              </CardHeader>
               <CardFooter className="flex items-center justify-center">
                 {isDisconnected ? (
                   <ConnectButton />
@@ -136,7 +138,7 @@ const LiquidityCard = () => {
                     className="w-1/2 bg-[#f4be76] hover:bg-[#eeae5a]"
                     onClick={handleDepositConfirmClick}
                   >
-                    Confirm
+                    Deposit
                   </Button>
                 )}
               </CardFooter>
@@ -205,7 +207,6 @@ const LiquidityCard = () => {
                         <SelectGroup>
                           <SelectLabel>Token</SelectLabel>
                           <SelectItem value="ETH">ETH</SelectItem>
-                          <SelectItem value="USDT">USDT</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
