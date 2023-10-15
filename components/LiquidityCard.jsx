@@ -41,6 +41,8 @@ const LiquidityCard = () => {
 
   const [chainId, setChainId] = useState(534351)
 
+  const [contractAddress, setContractAddress] = useState(CONTRACT_ADDRESS)
+
   const { address, isDisconnected } = useAccount()
   const { data, isError, isLoading } = useBalance({
     address: address,
@@ -49,9 +51,18 @@ const LiquidityCard = () => {
     cacheTime: 2_000
   })
 
-  const { switchNetwork } = useSwitchNetwork()
+  const {
+    data: poolData,
+    isError: poolIsError,
+    isLoading: poolIsLoading
+  } = useBalance({
+    address: contractAddress,
+    chainId: chainId,
+    watch: true,
+    cacheTime: 2_000
+  })
 
-  const [contractAddress, setContractAddress] = useState(CONTRACT_ADDRESS)
+  const { switchNetwork } = useSwitchNetwork()
 
   const {
     data: depositData,
@@ -132,7 +143,7 @@ const LiquidityCard = () => {
                   <CardTitle>Select Pool</CardTitle>
                   <div className="font-bold text-xl">
                     <div className="flex flex-row gap-2">
-                      Total <div className="text-[#ed7255]">{3}</div>ETH In{" "}
+                      Total <div className="text-[#ed7255]">{formatNumber(poolData?.formatted)}</div>ETH In{" "}
                       <div>{selectPool}</div> Pool
                     </div>
                   </div>
