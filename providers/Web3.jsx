@@ -41,7 +41,6 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     // zora,
     // ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [goerli] : [])
     ScrollSepoliaTestnet,
-    zkSyncTestnet,
     sepolia
   ],
   [publicProvider()]
