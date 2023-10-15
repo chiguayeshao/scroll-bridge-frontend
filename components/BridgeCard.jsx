@@ -84,10 +84,18 @@ const BridgeCard = () => {
                     id="token"
                     placeholder="0.00"
                     value={inputValueDeposit}
-                    onChange={(e) => setInputValueDeposit(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value
+                      const regex = /^\d+(\.\d{0,2})?$/
+                      if (regex.test(value) || value === "") {
+                        setInputValueDeposit(value)
+                      }
+                    }}
                   />
                   <div>
-                    <Select onValueChange={(value) => setSelectedTokenDeposit(value)}>
+                    <Select
+                      onValueChange={(value) => setSelectedTokenDeposit(value)}
+                    >
                       <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Select Token" />
                       </SelectTrigger>
@@ -171,7 +179,13 @@ const BridgeCard = () => {
                     id="token"
                     placeholder="0.00"
                     value={inputValueWithdraw}
-                    onChange={(e) => setInputValueWithdraw(e.target.value)}
+                    onChange={(e) => {
+                        const value = e.target.value
+                        const regex = /^\d+(\.\d{0,2})?$/
+                        if (regex.test(value) || value === "") {
+                            setInputValueWithdraw(value)
+                        }
+                      }}
                   />
                   <div>
                     <Select
