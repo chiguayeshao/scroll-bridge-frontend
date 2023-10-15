@@ -25,12 +25,12 @@ import { useAccount } from "wagmi"
 
 const BridgeCard = () => {
   const [inputValueDeposit, setInputValueDeposit] = useState("")
-  const [selectedNetworkDeposit, setSelectedNetworkDeposit] = useState("")
-  const [selectedTokenDeposit, setSelectedTokenDeposit] = useState("")
+  const [selectedNetworkDeposit, setSelectedNetworkDeposit] = useState("Ethereum")
+  const [selectedTokenDeposit, setSelectedTokenDeposit] = useState("ETH")
 
   const [inputValueWithdraw, setInputValueWithdraw] = useState("")
-  const [selectedNetworkWithdraw, setSelectedNetworkWithdraw] = useState("")
-  const [selectedTokenWithdraw, setSelectedTokenWithdraw] = useState("")
+  const [selectedNetworkWithdraw, setSelectedNetworkWithdraw] = useState("Ethereum")
+  const [selectedTokenWithdraw, setSelectedTokenWithdraw] = useState("ETH")
 
   const handleDepositConfirmClick = () => {
     console.log("Current Tab: Deposit")
@@ -66,6 +66,7 @@ const BridgeCard = () => {
                 <div>
                   <Select
                     onValueChange={(value) => setSelectedNetworkDeposit(value)}
+                    defaultValue="Ethereum"
                   >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Select NetWork" />
@@ -95,6 +96,7 @@ const BridgeCard = () => {
                   <div>
                     <Select
                       onValueChange={(value) => setSelectedTokenDeposit(value)}
+                      defaultValue="ETH"
                     >
                       <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Select Token" />
@@ -161,6 +163,7 @@ const BridgeCard = () => {
                 <div>
                   <Select
                     onValueChange={(value) => setSelectedNetworkWithdraw(value)}
+                    defaultValue="Ethereum"
                   >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Select NetWork" />
@@ -180,16 +183,17 @@ const BridgeCard = () => {
                     placeholder="0.00"
                     value={inputValueWithdraw}
                     onChange={(e) => {
-                        const value = e.target.value
-                        const regex = /^\d+(\.\d{0,2})?$/
-                        if (regex.test(value) || value === "") {
-                            setInputValueWithdraw(value)
-                        }
-                      }}
+                      const value = e.target.value
+                      const regex = /^\d+(\.\d{0,2})?$/
+                      if (regex.test(value) || value === "") {
+                        setInputValueWithdraw(value)
+                      }
+                    }}
                   />
                   <div>
                     <Select
                       onValueChange={(value) => setSelectedTokenWithdraw(value)}
+                      defaultValue="ETH"
                     >
                       <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Select Token" />
