@@ -21,37 +21,39 @@ import {
 } from "@/components/ui/select"
 import Image from "next/image"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
-import { useAccount, useBalance } from "wagmi"
+import { useAccount, useBalance, useSwitchNetwork } from "wagmi"
 
 const LiquidityCard = () => {
   const [inputValueDeposit, setInputValueDeposit] = useState("")
-  const [selectedNetworkDeposit, setSelectedNetworkDeposit] = useState("Zksync")
+  const [selectPool, setSelectedPool] = useState("Scroll")
   const [selectedTokenDeposit, setSelectedTokenDeposit] = useState("ETH")
 
   const [inputValueWithdraw, setInputValueWithdraw] = useState("")
-  const [selectedNetworkWithdraw, setSelectedNetworkWithdraw] =
-    useState("Zksync")
   const [selectedTokenWithdraw, setSelectedTokenWithdraw] = useState("ETH")
+
+  const [chainId, setChainId] = useState(534351)
 
   const { address, isDisconnected } = useAccount()
   const { data, isError, isLoading } = useBalance({
     address: address,
-    chainId: 534351,
+    chainId: chainId,
     watch: true,
     cacheTime: 2_000
   })
 
+  const { switchNetwork } = useSwitchNetwork()
+
   const handleDepositConfirmClick = () => {
     console.log("Current Tab: Deposit")
     console.log("Input Value (Deposit):", inputValueDeposit)
-    console.log("Selected Network (Deposit):", selectedNetworkDeposit)
+    console.log("Selected Network (Deposit):", selectPool)
     console.log("Selected Token (Deposit):", selectedTokenDeposit)
   }
 
   const handleWithdrawConfirmClick = () => {
     console.log("Current Tab: Withdraw")
     console.log("Input Value (Withdraw):", inputValueWithdraw)
-    console.log("Selected Network (Withdraw):", selectedNetworkWithdraw)
+    console.log("Selected Network (Withdraw):", selectPool)
     console.log("Selected Token (Withdraw):", selectedTokenWithdraw)
   }
 
@@ -82,7 +84,7 @@ const LiquidityCard = () => {
                   <div className="font-bold text-xl">
                     <div className="flex flex-row gap-2">
                       Total <div className="text-[#ed7255]">{3}</div>ETH In{" "}
-                      <div>{selectedNetworkDeposit}</div> Pool
+                      <div>{selectPool}</div> Pool
                     </div>
                   </div>
                 </div>
@@ -90,8 +92,18 @@ const LiquidityCard = () => {
               <CardContent className="space-y-2">
                 <div>
                   <Select
-                    onValueChange={(value) => setSelectedNetworkDeposit(value)}
-                    defaultValue="Zksync"
+                    onValueChange={(value) => {
+                      setSelectedPool(value)
+                      if (value === "Zksync") {
+                        switchNetwork(280)
+                        setChainId(280)
+                      }
+                      if (value === "Scroll") {
+                        switchNetwork(534351)
+                        setChainId(534351)
+                      }
+                    }}
+                    defaultValue={selectPool}
                   >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Select NetWork" />
@@ -99,8 +111,8 @@ const LiquidityCard = () => {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Network</SelectLabel>
-                        <SelectItem value="Zksync">Zksync</SelectItem>
                         <SelectItem value="Scroll">Scroll</SelectItem>
+                        <SelectItem value="Zksync">Zksync</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -146,7 +158,7 @@ const LiquidityCard = () => {
                       <div className="text-[#ed7255]">
                         {formatNumber(data?.formatted)}
                       </div>
-                      In {selectedNetworkDeposit}
+                      In {selectPool}
                     </div>
                   ) : (
                     <></>
@@ -177,8 +189,18 @@ const LiquidityCard = () => {
               <CardContent className="space-y-2">
                 <div>
                   <Select
-                    onValueChange={(value) => setSelectedNetworkWithdraw(value)}
-                    defaultValue="Zksync"
+                    onValueChange={(value) => {
+                      setSelectedPool(value)
+                      if (value === "Zksync") {
+                        switchNetwork(280)
+                        setChainId(280)
+                      }
+                      if (value === "Scroll") {
+                        switchNetwork(534351)
+                        setChainId(534351)
+                      }
+                    }}
+                    defaultValue={selectPool}
                   >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Select NetWork" />
@@ -186,8 +208,8 @@ const LiquidityCard = () => {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Network</SelectLabel>
-                        <SelectItem value="Zksync">Zksync</SelectItem>
                         <SelectItem value="Scroll">Scroll</SelectItem>
+                        <SelectItem value="Zksync">Zksync</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>

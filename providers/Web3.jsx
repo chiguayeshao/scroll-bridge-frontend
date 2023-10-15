@@ -39,8 +39,8 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     // arbitrum,
     // zora,
     // ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [goerli] : [])
-    zkSyncTestnet,
-    ScrollSepoliaTestnet
+    ScrollSepoliaTestnet,
+    zkSyncTestnet
   ],
   [publicProvider()]
 )
