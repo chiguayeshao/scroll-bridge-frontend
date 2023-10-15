@@ -25,7 +25,8 @@ import {
   useAccount,
   useBalance,
   useContractRead,
-  useContractWrite
+  useContractWrite,
+  useSwitchNetwork
 } from "wagmi"
 import { CONTRACT_ADDRESS, SEPOLIA_CONTRACT_ADDRESS } from "@/config/address"
 import Abi from "@/config/CrossChainBridge.json"
@@ -33,10 +34,13 @@ import { ethers, utils } from "ethers"
 
 const BridgeCard = () => {
   const [inputValueDeposit, setInputValueDeposit] = useState(0)
-  const [selectedNetworkDeposit, setSelectedNetworkDeposit] = useState("Sepolia")
+  const [selectedNetworkDeposit, setSelectedNetworkDeposit] =
+    useState("Sepolia")
   const [selectedTokenDeposit, setSelectedTokenDeposit] = useState("ETH")
 
   const { address, isDisconnected } = useAccount()
+
+  const { switchNetwork } = useSwitchNetwork()
 
   const { data, isError, isLoading } = useBalance({
     address: address,
@@ -78,13 +82,19 @@ const BridgeCard = () => {
     console.log("Selected Network (Deposit):", selectedNetworkDeposit)
     console.log("Selected Token (Deposit):", selectedTokenDeposit)
 
+    switchNetwork(11155111)
+
     write({
       args: [
         534351,
         ethers.constants.AddressZero,
-        utils.parseEther((inputValueDeposit - utils.formatEther(getFeeData)).toString())
+        utils.parseEther(
+          (inputValueDeposit - utils.formatEther(getFeeData)).toString()
+        )
       ],
-      value: utils.parseEther((inputValueDeposit - utils.formatEther(getFeeData)).toString())
+      value: utils.parseEther(
+        (inputValueDeposit - utils.formatEther(getFeeData)).toString()
+      )
     })
   }
 
@@ -207,7 +217,9 @@ const BridgeCard = () => {
                 ) : (
                   <Button
                     className="w-1/2 bg-[#f4be76] hover:bg-[#eeae5a]"
-                    onClick={handleDepositConfirmClick}
+                    onClick={() => {
+                      handleDepositConfirmClick();
+                    }}
                   >
                     Confirm
                   </Button>
