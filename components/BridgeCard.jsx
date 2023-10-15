@@ -21,7 +21,9 @@ import {
 } from "@/components/ui/select"
 import Image from "next/image"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
-import { useAccount, useBalance } from "wagmi"
+import { useAccount, useBalance, useContractRead } from "wagmi"
+import { CONTRACT_ADDRESS } from "@/config/address"
+import Abi from "@/config/CrossChainBridge.json"
 
 const BridgeCard = () => {
   const [inputValueDeposit, setInputValueDeposit] = useState("")
@@ -36,6 +38,13 @@ const BridgeCard = () => {
     chainId: 280,
     watch: true,
     cacheTime: 2_000
+  })
+
+  const { data:getFeeData, isError:getFeeError, isLoading:getFeeLoading } = useContractRead({
+    address: CONTRACT_ADDRESS,
+    abi: Abi,
+    functionName: "getFees",
+    // args: []
   })
 
   const handleDepositConfirmClick = () => {
