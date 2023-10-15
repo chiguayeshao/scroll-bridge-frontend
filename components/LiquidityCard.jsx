@@ -30,7 +30,7 @@ const LiquidityCard = () => {
 
   const [inputValueWithdraw, setInputValueWithdraw] = useState("")
   const [selectedNetworkWithdraw, setSelectedNetworkWithdraw] =
-    useState("Ethereum")
+    useState("Zksync")
   const [selectedTokenWithdraw, setSelectedTokenWithdraw] = useState("ETH")
 
   const handleDepositConfirmClick = () => {
@@ -64,9 +64,11 @@ const LiquidityCard = () => {
               <CardHeader>
                 <div className="flex flex-row justify-between">
                   <CardTitle>Select Pool</CardTitle>
-                  <div className="flex flex-row font-bold gap-2">
-                    Total<div className="text-[#ed7255]">{2}</div>ETH IN
-                    <div>{selectedNetworkDeposit}</div>
+                  <div className="font-bold text-xl">
+                    <div className="flex flex-row gap-2">
+                      Total <div className="text-[#ed7255]">{3}</div>ETH In{" "}
+                      <div>{selectedNetworkDeposit}</div> Pool
+                    </div>
                   </div>
                 </div>
               </CardHeader>
@@ -121,15 +123,13 @@ const LiquidityCard = () => {
                     max
                   </Button>
                 </div>
-              </CardContent>
-              <CardHeader>
-                <div className="font-bold text-xl">
-                  <div className="flex flex-row gap-2">
-                    Current <div className="text-[#ed7255]">{3}</div>ETH In{" "}
-                    <div>{selectedNetworkDeposit}</div> Pool
+                <div className="flex flex-row justify-between mt-4">
+                  <div></div>
+                  <div className="flex flex-row font-bold gap-2">
+                    Balance: <div className="text-[#ed7255]">{2}</div>
                   </div>
                 </div>
-              </CardHeader>
+              </CardContent>
               <CardFooter className="flex items-center justify-center">
                 {isDisconnected ? (
                   <ConnectButton />
@@ -149,26 +149,13 @@ const LiquidityCard = () => {
           <TabsContent value="withdraw">
             <Card>
               <CardHeader>
-                <CardTitle>From</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="space-y-1">
-                  <Image
-                    src="/scrollLogo.svg"
-                    alt="scrollLogo"
-                    width={128}
-                    height={96}
-                  />
-                </div>
-              </CardContent>
-              <CardHeader>
-                <CardTitle>To</CardTitle>
+                <CardTitle>Select Pool</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div>
                   <Select
                     onValueChange={(value) => setSelectedNetworkWithdraw(value)}
-                    defaultValue="Ethereum"
+                    defaultValue="Zksync"
                   >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Select NetWork" />
@@ -176,8 +163,8 @@ const LiquidityCard = () => {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Network</SelectLabel>
-                        <SelectItem value="Ethereum">Ethereum</SelectItem>
-                        <SelectItem value="Polygon">Polygon</SelectItem>
+                        <SelectItem value="Zksync">Zksync</SelectItem>
+                        <SelectItem value="Scroll">Scroll</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -211,6 +198,15 @@ const LiquidityCard = () => {
                       </SelectContent>
                     </Select>
                   </div>
+                  <Button className="bg-[#f4be76] hover:bg-[#eeae5a]">
+                    max
+                  </Button>
+                </div>
+                <div className="flex flex-row justify-between mt-4">
+                  <div></div>
+                  <div className="flex flex-row font-bold gap-2">
+                    Balance: <div className="text-[#ed7255]">{2}</div>
+                  </div>
                 </div>
               </CardContent>
               <CardFooter className="flex items-center justify-center">
@@ -221,7 +217,7 @@ const LiquidityCard = () => {
                     className="w-1/2 bg-[#f4be76] hover:bg-[#eeae5a]"
                     onClick={handleWithdrawConfirmClick}
                   >
-                    Confirm
+                    Withdraw
                   </Button>
                 )}
               </CardFooter>
