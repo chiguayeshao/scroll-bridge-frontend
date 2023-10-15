@@ -25,7 +25,8 @@ import {
   useAccount,
   useBalance,
   useSwitchNetwork,
-  useContractWrite
+  useContractWrite,
+  useContractRead
 } from "wagmi"
 import Abi from "@/config/CrossChainBridge.json"
 import { CONTRACT_ADDRESS, SEPOLIA_CONTRACT_ADDRESS } from "@/config/address"
@@ -60,6 +61,20 @@ const LiquidityCard = () => {
     chainId: chainId,
     watch: true,
     cacheTime: 2_000
+  })
+
+  const {
+    data: balanceData,
+    isError: balanceIsError,
+    isLoading: balanceIsLoading
+  } = useContractRead({
+    address: contractAddress,
+    abi: Abi,
+    functionName: "deposits",
+    args: [
+      address
+    ],
+    chainId: chainId
   })
 
   const { switchNetwork } = useSwitchNetwork()
@@ -325,9 +340,17 @@ const LiquidityCard = () => {
                 </div>
                 <div className="flex flex-row justify-between mt-4">
                   <div></div>
-                  <div className="flex flex-row font-bold gap-2">
-                    Balance: <div className="text-[#ed7255]">{2}</div>
-                  </div>
+                  {balanceData ? (
+                    <div className="flex flex-row font-bold gap-2">
+                      Balance:
+                      <div className="text-[#ed7255]">
+                        {utils.formatEther(balanceData)}
+                      </div>
+                      In {selectPool}
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </CardContent>
               <CardFooter className="flex items-center justify-center">
