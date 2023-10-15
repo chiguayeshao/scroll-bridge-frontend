@@ -1,9 +1,10 @@
 import Head from "next/head"
 import BridgeCard from "@/components/BridgeCard"
+import LiquidityCard from "@/components/LiquidityCard"
 
 const Home = () => {
   return (
-    <div >
+    <div>
       <Head>
         <title>Scroll Bridge</title>
         <meta
@@ -17,7 +18,10 @@ const Home = () => {
           <title>Degenmate Scroll Bridge</title>
         </Head>
 
-        <BridgeCard />
+        <div className="flex flex-col items-center justify-center w-full gap-10 mt-20">
+          <BridgeCard />
+          <LiquidityCard />
+        </div>
       </div>
     </div>
   )

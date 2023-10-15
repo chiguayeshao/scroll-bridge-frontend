@@ -23,7 +23,7 @@ import Image from "next/image"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { useAccount } from "wagmi"
 
-const BridgeCard = () => {
+const LiquidityCard = () => {
   const [inputValueDeposit, setInputValueDeposit] = useState("")
   const [selectedNetworkDeposit, setSelectedNetworkDeposit] =
     useState("Ethereum")
@@ -51,7 +51,7 @@ const BridgeCard = () => {
   const { isDisconnected } = useAccount()
   return (
     <div className="w-2/3 bg-white p-8 rounded-3xl shadow-md">
-      <div className=" font-bold text-3xl">Bridge</div>
+      <div className="font-bold text-3xl">Add liquidity</div>
       <div className="flex justify-center pt-6">
         <Tabs defaultValue="deposit" className="w-full">
           <TabsList className="grid w-full grid-cols-2 bg-[#fcefdc]">
@@ -232,4 +232,4 @@ const BridgeCard = () => {
   )
 }
 
-export default BridgeCard
+export default LiquidityCard
