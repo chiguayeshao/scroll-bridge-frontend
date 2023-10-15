@@ -33,6 +33,14 @@ const LiquidityCard = () => {
     useState("Zksync")
   const [selectedTokenWithdraw, setSelectedTokenWithdraw] = useState("ETH")
 
+  const { address, isDisconnected } = useAccount()
+  const { data, isError, isLoading } = useBalance({
+    address: address,
+    chainId: 534351,
+    watch: true,
+    cacheTime: 2_000
+  })
+
   const handleDepositConfirmClick = () => {
     console.log("Current Tab: Deposit")
     console.log("Input Value (Deposit):", inputValueDeposit)
@@ -47,18 +55,7 @@ const LiquidityCard = () => {
     console.log("Selected Token (Withdraw):", selectedTokenWithdraw)
   }
 
-  const { address, isDisconnected } = useAccount()
-  const { data, isError, isLoading } = useBalance({
-    address: address,
-    chainId: 534351,
-    watch: true,
-    cacheTime: 2_000
-  })
-
-  if (isLoading) return <div>Fetching balance…</div>
-  if (isError) return <div>Error fetching balance</div>
-
-  function formatNumber(numStr) {
+  const formatNumber = (numStr) => {
     const parsed = parseFloat(numStr)
     if (!isNaN(parsed)) {
       return parsed.toFixed(3)
@@ -145,10 +142,11 @@ const LiquidityCard = () => {
                   <div></div>
                   {data ? (
                     <div className="flex flex-row font-bold gap-2">
-                      Balance:{" "}
+                      Balance:
                       <div className="text-[#ed7255]">
                         {formatNumber(data?.formatted)}
                       </div>
+                      In {selectedNetworkDeposit}
                     </div>
                   ) : (
                     <></>

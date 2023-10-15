@@ -21,18 +21,22 @@ import {
 } from "@/components/ui/select"
 import Image from "next/image"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
-import { useAccount } from "wagmi"
+import { useAccount, useBalance } from "wagmi"
 
 const BridgeCard = () => {
   const [inputValueDeposit, setInputValueDeposit] = useState("")
   const [selectedNetworkDeposit, setSelectedNetworkDeposit] =
-    useState("Ethereum")
+    useState("ZkSync")
   const [selectedTokenDeposit, setSelectedTokenDeposit] = useState("ETH")
 
-  const [inputValueWithdraw, setInputValueWithdraw] = useState("")
-  const [selectedNetworkWithdraw, setSelectedNetworkWithdraw] =
-    useState("Ethereum")
-  const [selectedTokenWithdraw, setSelectedTokenWithdraw] = useState("ETH")
+  const { address, isDisconnected } = useAccount()
+  
+  const { data, isError, isLoading } = useBalance({
+    address: address,
+    chainId: 280,
+    watch: true,
+    cacheTime: 2_000
+  })
 
   const handleDepositConfirmClick = () => {
     console.log("Current Tab: Deposit")
@@ -41,14 +45,14 @@ const BridgeCard = () => {
     console.log("Selected Token (Deposit):", selectedTokenDeposit)
   }
 
-  const handleWithdrawConfirmClick = () => {
-    console.log("Current Tab: Withdraw")
-    console.log("Input Value (Withdraw):", inputValueWithdraw)
-    console.log("Selected Network (Withdraw):", selectedNetworkWithdraw)
-    console.log("Selected Token (Withdraw):", selectedTokenWithdraw)
+  const formatNumber = (numStr) => {
+    const parsed = parseFloat(numStr)
+    if (!isNaN(parsed)) {
+      return parsed.toFixed(3)
+    }
+    return "Invalid number"
   }
 
-  const { isDisconnected } = useAccount()
   return (
     <div className="w-2/3 bg-white p-8 rounded-3xl shadow-md">
       <div className=" font-bold text-3xl">Bridge</div>
@@ -64,7 +68,7 @@ const BridgeCard = () => {
                 <div>
                   <Select
                     onValueChange={(value) => setSelectedNetworkDeposit(value)}
-                    defaultValue="Ethereum"
+                    defaultValue="ZkSync"
                   >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Select NetWork" />
@@ -72,7 +76,6 @@ const BridgeCard = () => {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Network</SelectLabel>
-                        <SelectItem value="Ethereum">Ethereum</SelectItem>
                         <SelectItem value="ZkSync">ZkSync</SelectItem>
                       </SelectGroup>
                     </SelectContent>
@@ -112,6 +115,20 @@ const BridgeCard = () => {
                   >
                     max
                   </Button>
+                </div>
+                <div className="flex flex-row justify-between mt-4">
+                  <div></div>
+                  {data ? (
+                    <div className="flex flex-row font-bold gap-2">
+                      Balance:
+                      <div className="text-[#ed7255]">
+                        {formatNumber(data?.formatted)}
+                      </div>
+                      In {selectedNetworkDeposit}
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </CardContent>
               <CardHeader>
