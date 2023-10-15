@@ -21,7 +21,15 @@ import {
 } from "@/components/ui/select"
 import Image from "next/image"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
-import { useAccount, useBalance, useSwitchNetwork } from "wagmi"
+import {
+  useAccount,
+  useBalance,
+  useSwitchNetwork,
+  useContractWrite
+} from "wagmi"
+import Abi from "@/config/CrossChainBridge.json"
+import { CONTRACT_ADDRESS, SEPOLIA_CONTRACT_ADDRESS } from "@/config/address"
+import { ethers, utils } from "ethers"
 
 const LiquidityCard = () => {
   const [inputValueDeposit, setInputValueDeposit] = useState("")
@@ -43,18 +51,59 @@ const LiquidityCard = () => {
 
   const { switchNetwork } = useSwitchNetwork()
 
+  const [contractAddress, setContractAddress] = useState(CONTRACT_ADDRESS)
+
+  const {
+    data: depositData,
+    isLoading: depositIsLoading,
+    isSuccess: depositIsSuccess,
+    write
+  } = useContractWrite({
+    address: contractAddress,
+    abi: Abi,
+    functionName: "deposit",
+    chainId: chainId
+  })
+
   const handleDepositConfirmClick = () => {
     console.log("Current Tab: Deposit")
     console.log("Input Value (Deposit):", inputValueDeposit)
     console.log("Selected Network (Deposit):", selectPool)
     console.log("Selected Token (Deposit):", selectedTokenDeposit)
+
+    write({
+      args: [
+        ethers.constants.AddressZero,
+        utils.parseEther(inputValueDeposit.toString())
+      ],
+      value: utils.parseEther(inputValueDeposit.toString())
+    })
   }
+
+  const {
+    data: withdrawData,
+    isLoading: withdrawLoading,
+    isSuccess: withdrawSuccess,
+    write: withdraw
+  } = useContractWrite({
+    address: contractAddress,
+    abi: Abi,
+    functionName: "withdraw",
+    chainId: chainId
+  })
 
   const handleWithdrawConfirmClick = () => {
     console.log("Current Tab: Withdraw")
     console.log("Input Value (Withdraw):", inputValueWithdraw)
     console.log("Selected Network (Withdraw):", selectPool)
     console.log("Selected Token (Withdraw):", selectedTokenWithdraw)
+
+    withdraw({
+      args: [
+        ethers.constants.AddressZero,
+        utils.parseEther(inputValueWithdraw.toString())
+      ]
+    })
   }
 
   const formatNumber = (numStr) => {
@@ -94,13 +143,15 @@ const LiquidityCard = () => {
                   <Select
                     onValueChange={(value) => {
                       setSelectedPool(value)
-                      if (value === "Zksync") {
-                        switchNetwork(280)
-                        setChainId(280)
+                      if (value === "Sepolia") {
+                        switchNetwork(11155111)
+                        setChainId(11155111)
+                        setContractAddress(SEPOLIA_CONTRACT_ADDRESS)
                       }
                       if (value === "Scroll") {
                         switchNetwork(534351)
                         setChainId(534351)
+                        setContractAddress(CONTRACT_ADDRESS)
                       }
                     }}
                     defaultValue={selectPool}
@@ -112,7 +163,7 @@ const LiquidityCard = () => {
                       <SelectGroup>
                         <SelectLabel>Network</SelectLabel>
                         <SelectItem value="Scroll">Scroll</SelectItem>
-                        <SelectItem value="Zksync">Zksync</SelectItem>
+                        <SelectItem value="Sepolia">Sepolia</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -198,13 +249,15 @@ const LiquidityCard = () => {
                   <Select
                     onValueChange={(value) => {
                       setSelectedPool(value)
-                      if (value === "Zksync") {
-                        switchNetwork(280)
-                        setChainId(280)
+                      if (value === "Sepolia") {
+                        switchNetwork(11155111)
+                        setChainId(11155111)
+                        setContractAddress(SEPOLIA_CONTRACT_ADDRESS)
                       }
                       if (value === "Scroll") {
                         switchNetwork(534351)
                         setChainId(534351)
+                        setContractAddress(CONTRACT_ADDRESS)
                       }
                     }}
                     defaultValue={selectPool}
@@ -216,7 +269,7 @@ const LiquidityCard = () => {
                       <SelectGroup>
                         <SelectLabel>Network</SelectLabel>
                         <SelectItem value="Scroll">Scroll</SelectItem>
-                        <SelectItem value="Zksync">Zksync</SelectItem>
+                        <SelectItem value="Sepolia">Sepolia</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
