@@ -18,7 +18,7 @@ const Home = () => {
           <title>Degenmate Scroll Bridge</title>
         </Head>
 
-        <div className="flex flex-col items-center justify-center w-full gap-10 mt-20">
+        <div className="flex flex-col items-center justify-center w-full gap-10 mt-20 mb-20">
           <BridgeCard />
           <LiquidityCard />
         </div>
